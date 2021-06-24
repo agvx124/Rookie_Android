@@ -67,13 +67,7 @@ class MyFirebaseMessagingService: FirebaseMessagingService() {
         })
     }
 
-    /**
-     * 푸시 메시지의 세부 설정을 하고, 안드로이드 앱에 푸시 메시지를 보내는 메소드
-     *
-     * onMessagedReceived() 콜백 메소드에서 FCM이 보낸 메시지의 title, body 등을 알아와 sendNotification()의 매개변수로 넘기면 됨
-     *
-     * @param messageBody FCM message body received.
-     */
+
     private fun sendNotification(messageBody: Map<String, String>) {
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
