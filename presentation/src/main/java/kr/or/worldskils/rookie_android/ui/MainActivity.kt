@@ -2,6 +2,10 @@ package kr.or.worldskils.rookie_android.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import kr.or.worldskils.rookie_android.R
 import kr.or.worldskils.rookie_android.base.BaseActivity
 import kr.or.worldskils.rookie_android.databinding.ActivityMainBinding
@@ -21,6 +25,18 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun setUp() {
 
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("TAG", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            // Log and toast
+            Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()
+        })
     }
 
     override fun observerViewModel() {

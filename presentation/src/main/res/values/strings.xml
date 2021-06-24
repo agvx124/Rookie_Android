@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Rookie_Android</string>
+    <string name="default_notification_channel_id">rookie_channel</string>
+    <string name="fcm_message">루키 알림</string>
 </resources>
