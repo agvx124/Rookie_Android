@@ -14,6 +14,7 @@ import kr.or.worldskils.rookie_android.R
 import kr.or.worldskils.rookie_android.base.BaseActivity
 import kr.or.worldskils.rookie_android.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
+import kotlin.math.*
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -47,6 +48,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         object : Handler() {
             override fun handleMessage(msg: Message) {
                 binding.remainTextClock.text = getRemainTime()
+                binding.progressTextView.text = (round(getRemainProgress() * 100) / 100).toString() + "%"
+                binding.progressbar.progress = round(getRemainProgress()).toInt()
             }
         }
         thread(start = true) {
@@ -94,9 +97,19 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
     }
 
+    private fun getToday(): Date {
+        val cal = Calendar.getInstance()
+
+        return cal.time
+    }
+
     // 월요일 10시부터 시작.
     private fun getMonday(): Date {
         val cal = Calendar.getInstance()
+        cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+        cal.set(Calendar.HOUR_OF_DAY, 12)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
 
         return cal.time
     }
@@ -112,15 +125,28 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     private fun getRemainTime(): String {
-        val remainTime = getFriday().time - getMonday().time
+        val remainTime = getFriday().time - getToday().time
         val diffSeconds = remainTime / 1000
 
-        val hour = diffSeconds / (60 * 60)
-        val minute = diffSeconds / 60 - hour * 60
-        val second = diffSeconds % 60
+        val diffHour = diffSeconds / (60 * 60)
+        val diffMinute = diffSeconds / 60 - diffHour * 60
+        val diffSecond = diffSeconds % 60
 
         val day = (remainTime/ (24*60*60*1000)).toInt()
+        
+        var hour = diffHour.toString()
+        var minute = diffMinute.toString()
+        var second = diffSecond.toString()
 
+        if (diffHour < 10) {
+            hour = "0$hour"
+        }
+        if (diffMinute < 10) {
+            minute = "0$minute"
+        }
+        if (diffSecond < 10) {
+            second = "0$second"
+        }
 
         return if (day != 0) {
             "$day Day$hour : $minute : $second"
@@ -128,4 +154,17 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
             "$hour : $minute : $second"
         }
     }
+
+    private fun getRemainPercent(): Double {
+        val totalTime = getFriday().time - getMonday().time
+        val remainTime = getFriday().time - getToday().time
+
+        return 100.0 * remainTime / totalTime
+    }
+
+    private fun getRemainProgress(): Double {
+        return 100.00 - getRemainPercent()
+    }
+
+    prinvate 
 }

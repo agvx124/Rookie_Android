@@ -90,21 +90,31 @@
                         android:id="@+id/title_end_training_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
                         android:fontFamily="@font/noto_sans_bold"
                         android:text="이번주 훈련 종료까지"
                         android:textColor="?android:textColorPrimary"
-                        android:layout_marginStart="2dp"
                         android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="@+id/traning_end_imageView"
                         app:layout_constraintStart_toEndOf="@+id/traning_end_imageView"
+                        app:layout_constraintTop_toTopOf="@+id/traning_end_imageView" />
+
+                    <ImageView
+                        android:id="@+id/question_mark_imageView"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        android:src="@drawable/ic_question_mark"
+                        app:layout_constraintBottom_toBottomOf="@+id/traning_end_imageView"
+                        app:layout_constraintStart_toEndOf="@+id/title_end_training_textView"
                         app:layout_constraintTop_toTopOf="@+id/traning_end_imageView" />
 
                     <TextView
                         android:id="@+id/remain_text_clock"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/noto_sans"
                         android:layout_margin="8dp"
+                        android:fontFamily="@font/noto_sans"
                         android:gravity="center_horizontal"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="20sp"
@@ -133,6 +143,7 @@
                             tools:text="100%" />
 
                         <ProgressBar
+                            android:id="@+id/progressbar"
                             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="12dp"
@@ -141,7 +152,6 @@
 
 
                     </LinearLayout>
-
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
