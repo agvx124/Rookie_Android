@@ -13,10 +13,10 @@ import com.google.firebase.messaging.FirebaseMessaging
 import kr.or.worldskils.rookie_android.R
 import kr.or.worldskils.rookie_android.base.BaseActivity
 import kr.or.worldskils.rookie_android.databinding.ActivityMainBinding
-import java.text.SimpleDateFormat
-import kotlin.math.*
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
+import kotlin.math.*
 
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
@@ -128,30 +128,22 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         val remainTime = getFriday().time - getToday().time
         val diffSeconds = remainTime / 1000
 
-        val diffHour = diffSeconds / (60 * 60)
-        val diffMinute = diffSeconds / 60 - diffHour * 60
-        val diffSecond = diffSeconds % 60
+        val day = TimeUnit.SECONDS.toDays(diffSeconds)
+        val hours = TimeUnit.SECONDS.toHours(diffSeconds) -
+                TimeUnit.DAYS.toHours(day)
+        val minute = TimeUnit.SECONDS.toMinutes(diffSeconds) -
+                TimeUnit.DAYS.toMinutes(day) -
+                TimeUnit.HOURS.toMinutes(hours)
+        val second = TimeUnit.SECONDS.toSeconds(diffSeconds) -
+                TimeUnit.DAYS.toSeconds(day) -
+                TimeUnit.HOURS.toSeconds(hours) -
+                TimeUnit.MINUTES.toSeconds(minute)
 
-        val day = (remainTime/ (24*60*60*1000)).toInt()
-        
-        var hour = diffHour.toString()
-        var minute = diffMinute.toString()
-        var second = diffSecond.toString()
 
-        if (diffHour < 10) {
-            hour = "0$hour"
-        }
-        if (diffMinute < 10) {
-            minute = "0$minute"
-        }
-        if (diffSecond < 10) {
-            second = "0$second"
-        }
-
-        return if (day != 0) {
-            "$day Day$hour : $minute : $second"
+        return if (day.toInt() != 0) {
+            "$day Day  $hours : $minute : $second"
         } else {
-            "$hour : $minute : $second"
+            "$hours : $minute : $second"
         }
     }
 
@@ -165,6 +157,4 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     private fun getRemainProgress(): Double {
         return 100.00 - getRemainPercent()
     }
-
-    prinvate 
 }
